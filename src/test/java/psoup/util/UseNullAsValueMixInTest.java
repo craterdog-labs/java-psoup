@@ -14,7 +14,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
-import psoup.Creature;
 import psoup.genes.Chop;
 
 
@@ -27,13 +26,11 @@ public class UseNullAsValueMixInTest {
     public void testComparison() {
         Chop chop1 = new Chop();
         chop1.probability = new Probability(0.3d);
-        Creature creature1 = new Creature(chop1);
-        int id1 = creature1.getSpeciesId();
+        int id1 = chop1.getSpeciesId();
 
         Chop chop2 = new Chop();
         chop2.probability = new Probability(0.7d);
-        Creature creature2 = new Creature(chop2);
-        int id2 = creature2.getSpeciesId();
+        int id2 = chop2.getSpeciesId();
 
         assertEquals(id1, id2);
     }
