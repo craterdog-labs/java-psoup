@@ -25,9 +25,13 @@ import org.jfree.chart.renderer.xy.*;
 import org.jfree.chart.title.LegendTitle;
 import org.jfree.data.*;
 import org.jfree.data.time.*;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 
 public final class Console extends javax.swing.JFrame {
+
+    static XLogger logger = XLoggerFactory.getXLogger(Console.class);
 
     /** Creates new form Console */
     public Console() {
@@ -156,44 +160,40 @@ public final class Console extends javax.swing.JFrame {
 
 
     private void startCollectingStatistics() {
-        statisticsThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                int iterations = 0;
-                try {
-                    while (!Thread.interrupted()) {
-                        int numberOfActiveThreads = engine.getNumberOfActiveThreads();
-                        int numberOfGenerations = engine.getNumberOfGenerations();
-                        double temperature = pool.getTemperature().toDouble() * 100;
-                        numberOfThreadsField.setText(Integer.toString(numberOfActiveThreads));
-                        numberOfGenerationsField.setText(Integer.toString(numberOfGenerations));
-                        if (iterations > 0) {
-                            generationsPerSecondField.setText(Integer.toString(numberOfGenerations / (iterations * 5 /*seconds/iteration*/ )));
-                        } else {
-                            generationsPerSecondField.setText("0");
-                        }
-                        currentNumberOfGenesField.setText(Integer.toString(pool.getCurrentNumberOfGenes()));
-                        currentNumberOfSpeciesField.setText(Integer.toString(pool.getCurrentNumberOfSpecies()));
-                        currentNumberOfCreaturesField.setText(Integer.toString(pool.getCurrentNumberOfCreatures()));
-                        lowNumberOfGenesField.setText(Integer.toString(pool.getLowestNumberOfGenes()));
-                        lowNumberOfSpeciesField.setText(Integer.toString(pool.getLowestNumberOfSpecies()));
-                        lowNumberOfCreaturesField.setText(Integer.toString(pool.getLowestNumberOfCreatures()));
-                        highNumberOfGenesField.setText(Integer.toString(pool.getHighestNumberOfGenes()));
-                        highNumberOfSpeciesField.setText(Integer.toString(pool.getHighestNumberOfSpecies()));
-                        highNumberOfCreaturesField.setText(Integer.toString(pool.getHighestNumberOfCreatures()));
-                        currentTemperatureSlider.setValue((int) Math.round(temperature));
-                        creatureData.addOrUpdate(new Minute(), pool.getCurrentNumberOfCreatures());
-                        speciesData.addOrUpdate(new Minute(), pool.getCurrentNumberOfSpecies());
-                        temperatureData.addOrUpdate(new Minute(), temperature);
-                        iterations++;
-                        Thread.sleep(5 * SECONDS);
+        statisticsThread = new Thread(() -> {
+            int iterations = 0;
+            try {
+                while (!Thread.interrupted()) {
+                    int numberOfActiveThreads = engine.getNumberOfActiveThreads();
+                    int numberOfGenerations = engine.getNumberOfGenerations();
+                    double temperature = pool.getTemperature().toDouble() * 100;
+                    numberOfThreadsField.setText(Integer.toString(numberOfActiveThreads));
+                    numberOfGenerationsField.setText(Integer.toString(numberOfGenerations));
+                    if (iterations > 0) {
+                        generationsPerSecondField.setText(Integer.toString(numberOfGenerations / (iterations * 5 /*seconds/iteration*/ )));
+                    } else {
+                        generationsPerSecondField.setText("0");
                     }
-                } catch (InterruptedException e) {
-                    // do nothing, just wait to exit
-                } catch (Exception e) {
-                    System.err.println("Console update thread caught the following exception:\n" + e.getMessage());
-                    e.printStackTrace(System.err);
+                    currentNumberOfGenesField.setText(Integer.toString(pool.getCurrentNumberOfGenes()));
+                    currentNumberOfSpeciesField.setText(Integer.toString(pool.getCurrentNumberOfSpecies()));
+                    currentNumberOfCreaturesField.setText(Integer.toString(pool.getCurrentNumberOfCreatures()));
+                    lowNumberOfGenesField.setText(Integer.toString(pool.getLowestNumberOfGenes()));
+                    lowNumberOfSpeciesField.setText(Integer.toString(pool.getLowestNumberOfSpecies()));
+                    lowNumberOfCreaturesField.setText(Integer.toString(pool.getLowestNumberOfCreatures()));
+                    highNumberOfGenesField.setText(Integer.toString(pool.getHighestNumberOfGenes()));
+                    highNumberOfSpeciesField.setText(Integer.toString(pool.getHighestNumberOfSpecies()));
+                    highNumberOfCreaturesField.setText(Integer.toString(pool.getHighestNumberOfCreatures()));
+                    currentTemperatureSlider.setValue((int) Math.round(temperature));
+                    creatureData.addOrUpdate(new Minute(), pool.getCurrentNumberOfCreatures());
+                    speciesData.addOrUpdate(new Minute(), pool.getCurrentNumberOfSpecies());
+                    temperatureData.addOrUpdate(new Minute(), temperature);
+                    iterations++;
+                    Thread.sleep(5 * SECONDS);
                 }
+            } catch (InterruptedException e) {
+                // do nothing, just wait to exit
+            } catch (Exception e) {
+                logger.error("Console update thread caught the following exception: {}", e);
             }
         });
         statisticsThread.start();
@@ -773,7 +773,7 @@ public final class Console extends javax.swing.JFrame {
                 engine.startEvolving(numberOfThreads);
                 startCollectingStatistics();
             } catch (NumberFormatException e) {
-                System.err.println("Bad initial number of threads entered.");
+                logger.error("Bad initial number of threads entered.");
             }
         }
     }//GEN-LAST:event_evolutionButtonActionPerformed
@@ -799,7 +799,7 @@ public final class Console extends javax.swing.JFrame {
                 temperatureData.clear();
                 evolutionButton.setEnabled(true);
             } catch (NumberFormatException e) {
-                System.err.println("Bad initialization parameters entered.");
+                logger.error("Bad initialization parameters entered.");
             }
         }
     }//GEN-LAST:event_initializeButtonActionPerformed

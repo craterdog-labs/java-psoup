@@ -33,8 +33,8 @@ public final class Processor implements GeneVisitor {
 
     @Override
     public void visit(Branch gene) {
-        Probability probability = gene.probability;
-        if (Probability.coinToss(probability)) {
+        // flip a coin to decide which branch to process
+        if (Probability.coinToss(gene.probability)) {
             Gene left = gene.leftBranch;
             if (left != null) {
                 left.accept(this);
@@ -50,26 +50,27 @@ public final class Processor implements GeneVisitor {
 
     @Override
     public void visit(Chop gene) {
+        // if there is a creature on the stack, chop it and put its pieces back on the stack
         if (!stack.empty()) {
-            Gene top = stack.pop();
-            Probability probability = gene.probability;
-            Chopper chopper = new Chopper(pool, probability);
-            top.accept(chopper);
-            pool.putCreature(top);
+            Gene creature = stack.pop();
+            Chopper chopper = new Chopper(pool, gene.probability);
+            creature.accept(chopper);
+            stack.push(creature);
         }
     }
 
 
     @Override
     public void visit(Copy gene) {
+        // if there is a creature on the stack, copy it and put them both back on the stack
         if (!stack.empty()) {
-            Gene top = stack.pop();
+            Gene creature = stack.pop();
             Copier copier = new Copier(pool, gene.probability);
-            top.accept(copier);
-            pool.putCreature(top);
+            creature.accept(copier);
+            stack.push(creature);
             Gene copy = copier.copy;
             if (copy != null) {
-                pool.putCreature(copy);
+                stack.push(copy);
             }
         }
     }
@@ -77,11 +78,11 @@ public final class Processor implements GeneVisitor {
 
     @Override
     public void visit(Get gene) {
+        // if the gene has a template, get a matching creature from the pool and put it on the stack
         Gene template = gene.template;
         if (template != null) {
-            Gene creature = pool.getCreature(template.getSpeciesId());
-            if (creature != null) {
-                Gene match = creature;
+            Gene match = pool.getCreature(template.getSpeciesId());
+            if (match != null) {
                 stack.push(match);
             }
         }
@@ -90,38 +91,41 @@ public final class Processor implements GeneVisitor {
 
     @Override
     public void visit(Merge gene) {
-        if (!stack.empty()) {
-            Gene top = stack.pop();
+        // if there are multiple creatures on the stack, merge them and put them back on the stack
+        if (stack.size() > 1) {
+            Gene creature = stack.pop();
             Merger merger = new Merger(pool, stack);
-            top.accept(merger);
-            pool.putCreature(top);
+            creature.accept(merger);
+            stack.push(creature);
         }
     }
 
 
     @Override
     public void visit(Mutate gene) {
+        // if there is a creature on the stack, mutate it and put it back on the stack
         if (!stack.empty()) {
-            Gene top = stack.pop();
-            Probability probability = gene.probability;
-            Mutator mutator = new Mutator(pool, probability);
-            top.accept(mutator);
-            pool.putCreature(top);
+            Gene creature = stack.pop();
+            Mutator mutator = new Mutator(pool, gene.probability);
+            creature.accept(mutator);
+            stack.push(creature);
         }
     }
 
 
     @Override
     public void visit(Put gene) {
+        // if there is a creature on the stack, throw it back in the pool
         if (!stack.empty()) {
-            Gene top = stack.pop();
-            pool.putCreature(top);
+            Gene creature = stack.pop();
+            pool.putCreature(creature);
         }
     }
 
 
     @Override
     public void visit(Sequence gene) {
+        // process each gene in the sequence in order
         for (Gene g : gene.genes) {
             g.accept(this);
         }

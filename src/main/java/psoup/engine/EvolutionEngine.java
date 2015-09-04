@@ -9,6 +9,8 @@
  ************************************************************************/
 package psoup.engine;
 
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 import psoup.*;
 import psoup.util.*;
 
@@ -22,6 +24,9 @@ import psoup.util.*;
  */
 public final class EvolutionEngine implements Evolver {
 
+    static XLogger logger = XLoggerFactory.getXLogger(EvolutionEngine.class);
+
+
     public EvolutionEngine(Pool pool) {
         this.pool = pool;
         this.evolving = false;
@@ -32,6 +37,7 @@ public final class EvolutionEngine implements Evolver {
     @Override
     public synchronized void startEvolving(int threadCount) {
         if (!evolving) {
+            logger.info("Starting evolution...");
             evolving = true;
 
             // reset any existing state
@@ -54,7 +60,7 @@ public final class EvolutionEngine implements Evolver {
     @Override
     public synchronized void stopEvolving() {
         if (evolving) {
-            evolving = false;
+            logger.info("Stopping evolution...");
 
             // interrupt the running processors
             processors.interrupt();
@@ -73,6 +79,8 @@ public final class EvolutionEngine implements Evolver {
                     }
                 }
             }
+
+            evolving = false;
         }
     }
 

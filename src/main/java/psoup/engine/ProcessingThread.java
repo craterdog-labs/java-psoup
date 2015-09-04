@@ -9,6 +9,8 @@
  ************************************************************************/
 package psoup.engine;
 
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 import psoup.*;
 import psoup.util.*;
 
@@ -23,6 +25,8 @@ import psoup.util.*;
  */
 final class ProcessingThread extends Thread {
 
+    static XLogger logger = XLoggerFactory.getXLogger(ProcessingThread.class);
+
     ProcessingThread(ThreadGroup group, String name, Pool pool, SharedCounter generationCounter) {
         super(group, name);
         this.pool = pool;
@@ -33,6 +37,7 @@ final class ProcessingThread extends Thread {
     @Override
     public void run() {
         try {
+            logger.info("Starting thread {}...", this.getName());
             Processor processor = new Processor(pool);
             while (!Thread.interrupted()) {
                 Gene creature = pool.getCreature(0);
@@ -42,11 +47,10 @@ final class ProcessingThread extends Thread {
                     generationCounter.increment();
                 }
                 processor.reset();
-                Thread.yield();
             }
+            logger.info("Terminating thread {}...", this.getName());
         } catch (RuntimeException e) {
-            System.err.println("Thread exiting with exception:\n" + e.getMessage());
-            e.printStackTrace();
+            logger.error("Thread {} exited with exception: {}", this.getName(), e);
         }
     }
 
