@@ -9,9 +9,9 @@
  ************************************************************************/
 package psoup.genes;
 
+import psoup.GeneVisitor;
 import craterdog.primitives.Probability;
 import psoup.*;
-import psoup.util.*;
 
 
 /**

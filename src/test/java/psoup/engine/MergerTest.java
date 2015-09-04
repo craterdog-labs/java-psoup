@@ -9,6 +9,7 @@
  ************************************************************************/
 package psoup.engine;
 
+import psoup.GeneVisitor;
 import craterdog.primitives.Probability;
 import java.util.*;
 import org.junit.Test;
@@ -16,7 +17,6 @@ import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 import psoup.*;
 import psoup.genes.*;
-import psoup.util.*;
 import psoup.pool.*;
 
 public class MergerTest {

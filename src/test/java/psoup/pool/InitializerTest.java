@@ -9,6 +9,7 @@
  ************************************************************************/
 package psoup.pool;
 
+import psoup.GeneVisitor;
 import craterdog.primitives.Probability;
 import org.junit.Test;
 import org.slf4j.ext.XLogger;

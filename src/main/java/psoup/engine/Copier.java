@@ -9,6 +9,7 @@
  ************************************************************************/
 package psoup.engine;
 
+import psoup.GeneVisitor;
 import craterdog.primitives.Probability;
 import craterdog.smart.SmartObjectMapper;
 import psoup.*;

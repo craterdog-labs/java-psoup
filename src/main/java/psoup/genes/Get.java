@@ -9,8 +9,8 @@
  ************************************************************************/
 package psoup.genes;
 
+import psoup.GeneVisitor;
 import psoup.*;
-import psoup.util.*;
 
 
 /**

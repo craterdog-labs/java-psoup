@@ -7,27 +7,43 @@
  * under the terms of The MIT License (MIT), as published by the Open   *
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
-package psoup.util;
+package psoup;
 
 import psoup.genes.*;
 
 
-/**
- * This interface defines the visitor pattern methods that must be
- * implemented by all gene visitors.  It basically allows a visitor
- * to visit each type of gene.
- *
- * @author Derk Norton
- */
-public interface GeneVisitor {
-    
-    public void visit(Get gene);
-    public void visit(Put gene);
-    public void visit(Merge gene);
-    public void visit(Chop gene);
-    public void visit(Copy gene);
-    public void visit(Mutate gene);
-    public void visit(Branch gene);
-    public void visit(Sequence gene);
+public final class TestVisitor implements GeneVisitor {
+
+    @Override
+    public void visit(Branch gene) {
+    }
+
+    @Override
+    public void visit(Mutate gene) {
+    }
+
+    @Override
+    public void visit(Merge gene) {
+    }
+
+    @Override
+    public void visit(Chop gene) {
+    }
+
+    @Override
+    public void visit(Get gene) {
+    }
+
+    @Override
+    public void visit(Sequence gene) {
+    }
+
+    @Override
+    public void visit(Copy gene) {
+    }
+
+    @Override
+    public void visit(Put gene) {
+    }
 
 }

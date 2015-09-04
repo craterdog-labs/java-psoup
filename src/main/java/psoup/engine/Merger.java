@@ -9,11 +9,11 @@
  ************************************************************************/
 package psoup.engine;
 
+import psoup.GeneVisitor;
 import craterdog.primitives.Probability;
 import java.util.*;
 import psoup.*;
 import psoup.genes.*;
-import psoup.util.*;
 
 
 /**

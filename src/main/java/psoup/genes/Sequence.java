@@ -9,9 +9,9 @@
  ************************************************************************/
 package psoup.genes;
 
+import psoup.GeneVisitor;
 import java.util.*;
 import psoup.*;
-import psoup.util.*;
 
 
 /**

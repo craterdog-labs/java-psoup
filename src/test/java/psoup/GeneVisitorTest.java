@@ -7,7 +7,7 @@
  * under the terms of The MIT License (MIT), as published by the Open   *
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
-package psoup.util;
+package psoup;
 
 import org.junit.Test;
 import org.slf4j.ext.XLogger;

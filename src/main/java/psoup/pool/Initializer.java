@@ -9,6 +9,7 @@
  ************************************************************************/
 package psoup.pool;
 
+import psoup.GeneVisitor;
 import craterdog.primitives.Probability;
 import craterdog.utils.RandomUtils;
 import psoup.*;
