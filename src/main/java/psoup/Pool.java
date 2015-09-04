@@ -12,6 +12,13 @@ package psoup;
 import craterdog.primitives.Probability;
 
 
+/**
+ * This interface defines the methods the must be implemented
+ * by a gene pool.  It specifies methods for adding and removing
+ * creatures from the pool and accessing metrics about the pool.
+ *
+ * @author Derk Norton
+ */
 public interface Pool {
 
     public void initialize(int numberOfCreatures, Probability relativeComplexity, int maximumDepth, Probability temperature);

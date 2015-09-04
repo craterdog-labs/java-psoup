@@ -29,6 +29,12 @@ import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 
 
+/**
+ * This class defines the gene pool console.  It can be used to initialize
+ * the gene pool and running evolution simulations.
+ *
+ * @author Derk Norton
+ */
 public final class Console extends javax.swing.JFrame {
 
     static XLogger logger = XLoggerFactory.getXLogger(Console.class);

@@ -12,6 +12,13 @@ package psoup.util;
 import psoup.genes.*;
 
 
+/**
+ * This interface defines the visitor pattern methods that must be
+ * implemented by all gene visitors.  It basically allows a visitor
+ * to visit each type of gene.
+ *
+ * @author Derk Norton
+ */
 public interface GeneVisitor {
     
     public void visit(Get gene);

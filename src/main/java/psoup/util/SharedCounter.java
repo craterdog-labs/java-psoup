@@ -12,6 +12,13 @@ package psoup.util;
 import craterdog.smart.SmartObject;
 
 
+/**
+ * This class implements a shared counter that can track the current
+ * value and low and high watermarks for a specific metric.  This
+ * class is thread-safe.
+ *
+ * @author Derk Norton
+ */
 public final class SharedCounter extends SmartObject<SharedCounter> {
 
     public SharedCounter() {

@@ -13,6 +13,13 @@ import craterdog.smart.SmartObject;
 import java.util.*;
 
 
+/**
+ * This class manages all creatures that belong to the same species.
+ * Creatures belong to the same species have the same genetic structure
+ * but may have different probability values within matching genes.
+ *
+ * @author Derk Norton
+ */
 public final class Species extends SmartObject<Species> {
 
     public Species() {

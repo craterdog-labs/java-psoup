@@ -16,6 +16,13 @@ import psoup.genes.*;
 import psoup.util.*;
 
 
+/**
+ * This class implements the gene visitor pattern and initializes
+ * each gene in a new creature based on the desired size and
+ * complexity of the creatures..
+ *
+ * @author Derk Norton
+ */
 public final class Initializer implements GeneVisitor {
 
     public Initializer(Probability relativeComplexity, int maximumDepth, SharedCounter geneCounter) {

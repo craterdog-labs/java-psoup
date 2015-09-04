@@ -11,6 +11,14 @@ package psoup.util;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
+
+/**
+ * This interface defines a mixin that can be used to specify to
+ * the jackson mappers specific class types whose values should always
+ * be mapped to null.
+ *
+ * @author Derk Norton
+ */
 public interface UseNullAsValueMixIn {
 
     @JsonValue

@@ -20,6 +20,13 @@ import java.util.*;
 import java.io.*;
 
 
+/**
+ * This class implements the gene pool.  It is shared by all processors
+ * that pull creatures out of it and operate on them before returning
+ * the creatures to the pool.  This class is thread-safe.
+ *
+ * @author Derk Norton
+ */
 public final class GenePool extends SmartObject<GenePool> implements Pool {
 
     static public final int BRANCH_ID = new Branch().getSpeciesId();
