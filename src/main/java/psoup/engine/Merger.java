@@ -70,15 +70,7 @@ public final class Merger implements GeneVisitor {
 
     @Override
     public void visit(Get gene) {
-        Gene template = gene.template;
-        if (template == null && !stack.empty()) {
-            template = stack.pop();
-            gene.template = template;
-        }
-
-        if (template != null && !stack.empty()) {
-            template.accept(this);
-        }
+        // nothing to merge
     }
 
 

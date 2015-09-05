@@ -74,12 +74,10 @@ public final class Mutator implements GeneVisitor {
 
     @Override
     public void visit(Get gene) {
-        // mutate the template
-        Gene template = gene.template;
-        if (template != null) {
-            template.accept(this);
+        // mutate the species
+        if (pool.weightedCoinFlip(probability)) {
+            gene.speciesId = pool.pickRandomSpecies();
         }
-
     }
 
 

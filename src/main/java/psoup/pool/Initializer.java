@@ -18,15 +18,16 @@ import psoup.util.*;
 
 
 /**
- * This class implements the gene visitor pattern and initializes
- * each gene in a new creature based on the desired size and
- * complexity of the creatures..
+ * This class implements the gene visitor pattern and recursively
+ * "grows" each gene in a new creature based on the desired size
+ * and complexity of the creatures..
  *
  * @author Derk Norton
  */
 public final class Initializer implements GeneVisitor {
 
-    public Initializer(Probability relativeComplexity, int maximumDepth, SharedCounter geneCounter) {
+    public Initializer(Pool pool, Probability relativeComplexity, int maximumDepth, SharedCounter geneCounter) {
+        this.pool = pool;
         this.relativeComplexity = relativeComplexity;
         this.currentDepth = 0;
         this.maximumDepth = maximumDepth;
@@ -72,12 +73,8 @@ public final class Initializer implements GeneVisitor {
 
     @Override
     public void visit(Get gene) {
-        // initialize the template
-        if (coinFlip()) {
-            Gene template = generateGene();
-            gene.template = template;
-            initializeGene(template);
-        }
+        // initialize the species
+        gene.speciesId = pool.pickRandomSpecies();
     }
 
 
@@ -113,11 +110,10 @@ public final class Initializer implements GeneVisitor {
     }
 
 
-    static public Gene generateCreature(Probability relativeComplexity, int maximumDepth, SharedCounter geneCounter) {
+    public Gene generateCreature() {
         // apply the visitor pattern
-        Initializer initializer = new Initializer(relativeComplexity, maximumDepth, geneCounter);
-        Gene creature = initializer.generateGene();
-        creature.accept(initializer);
+        Gene creature = generateGene();
+        creature.accept(this);
         return creature;
     }
 
@@ -159,6 +155,7 @@ public final class Initializer implements GeneVisitor {
     }
 
 
+    private final Pool pool;
     private final Probability relativeComplexity;
     private int currentDepth;
     private final int maximumDepth;

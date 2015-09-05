@@ -71,14 +71,7 @@ public final class Chopper implements GeneVisitor {
 
     @Override
     public void visit(Get gene) {
-        Gene template = gene.template;
-        if (template != null) {
-            template.accept(this);
-            if (pool.weightedCoinFlip(probability)) {
-                gene.template = null;
-                pool.putCreature(template);
-            }
-        }
+        // nothing to chop
     }
 
 

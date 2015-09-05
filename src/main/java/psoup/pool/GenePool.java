@@ -43,11 +43,6 @@ public final class GenePool extends SmartObject<GenePool> implements Pool {
     }
 
 
-    public GenePool(int capacity) {
-        pool = new HashMap<>(capacity);
-    }
-
-
     @Override
     public synchronized void initialize(int numberOfCreatures, Probability relativeComplexity, int maximumDepth, Probability temperature) {
         // reset the existing state
@@ -58,8 +53,9 @@ public final class GenePool extends SmartObject<GenePool> implements Pool {
 
         // initialize the pool
         this.temperature = temperature;
+        Initializer initializer = new Initializer(this, relativeComplexity, maximumDepth, geneCounter);
         for (int i = 0; i < numberOfCreatures; i++) {
-            Gene creature = Initializer.generateCreature(relativeComplexity, maximumDepth, geneCounter);
+            Gene creature = initializer.generateCreature();
             putCreature(creature);
         }
 
@@ -98,8 +94,7 @@ public final class GenePool extends SmartObject<GenePool> implements Pool {
 
         // if looking for any species, pick one at random
         if (speciesId == 0) {
-            int index = RandomUtils.pickRandomIndex(currentNumberOfSpecies);
-            speciesId = (Integer) pool.keySet().toArray()[index];
+            speciesId = pickRandomSpecies();
         }
 
         // remove a random creature of the desired species (if any exist)
@@ -134,6 +129,18 @@ public final class GenePool extends SmartObject<GenePool> implements Pool {
         // add the new creature to the list
         species.members.add(creature);
         creatureCounter.increment();
+    }
+
+
+    @Override
+    public synchronized int pickRandomSpecies() {
+        int speciesId = 0;
+        int numberOfSpecies = getCurrentNumberOfSpecies();
+        if (numberOfSpecies > 0) {
+            int index = RandomUtils.pickRandomIndex(numberOfSpecies);
+            speciesId = (Integer) pool.keySet().toArray()[index];
+        }
+        return speciesId;
     }
 
 

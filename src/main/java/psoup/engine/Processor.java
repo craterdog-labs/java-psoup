@@ -78,13 +78,10 @@ public final class Processor implements GeneVisitor {
 
     @Override
     public void visit(Get gene) {
-        // if the gene has a template, get a matching creature from the pool and put it on the stack
-        Gene template = gene.template;
-        if (template != null) {
-            Gene match = pool.getCreature(template.getSpeciesId());
-            if (match != null) {
-                stack.push(match);
-            }
+        // get a matching creature from the pool and put it on the stack
+        Gene match = pool.getCreature(gene.speciesId);
+        if (match != null) {
+            stack.push(match);
         }
     }
 

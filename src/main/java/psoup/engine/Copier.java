@@ -45,33 +45,27 @@ public final class Copier implements GeneVisitor {
 
     @Override
     public void visit(Branch gene) {
-
         // copy the gene itself
-        Gene creature =  pool.getCreature(GenePool.BRANCH_ID);
-        Branch branch = null;
+        Branch creature =  (Branch) pool.getCreature(GenePool.BRANCH_ID);
         if (creature != null) {
-            branch = (Branch) creature;
-
             // copy the probability
-            branch.probability = gene.probability;
+            creature.probability = gene.probability;
 
             // copy the left branch
             Gene left = gene.leftBranch;
             if (left != null && pool.weightedCoinFlip(probability)) {
                 left.accept(this);
-                branch.leftBranch = copy;
+                creature.leftBranch = copy;
             }
 
             // copy the right branch
             Gene right = gene.rightBranch;
             if (right != null && pool.weightedCoinFlip(probability)) {
                 right.accept(this);
-                branch.rightBranch = copy;
+                creature.rightBranch = copy;
             }
-
         }
-        copy = branch;
-
+        copy = creature;
     }
 
 
@@ -97,22 +91,11 @@ public final class Copier implements GeneVisitor {
 
     @Override
     public void visit(Get gene) {
-
-        // copy the gene itself
-        Gene creature = pool.getCreature(GenePool.GET_ID);
-        Get get = null;
+        Get creature = (Get) pool.getCreature(GenePool.GET_ID);
         if (creature != null) {
-            get = (Get) creature;
-            // copy the template
-            Gene template = gene.template;
-            if (template != null) {
-                template.accept(this);
-                get.template = copy;
-            }
+            creature.speciesId = gene.speciesId;
         }
-
-        copy = get;
-
+        copy = creature;
     }
 
 
@@ -149,22 +132,18 @@ public final class Copier implements GeneVisitor {
 
     @Override
     public void visit(Sequence gene) {
-
         // copy the gene itself
-        Gene creature = pool.getCreature(GenePool.SEQUENCE_ID);
-        Sequence sequence = null;
+        Sequence creature = (Sequence) pool.getCreature(GenePool.SEQUENCE_ID);
         if (creature != null) {
-            sequence = (Sequence) creature;
+            // copy its children
             for (Gene item : gene.genes) {
                 item.accept(this);
                 if (copy != null) {
-                    sequence.genes.add(copy);
+                    creature.genes.add(copy);
                 }
             }
         }
-
-        copy = sequence;
-
+        copy = creature;
     }
 
 

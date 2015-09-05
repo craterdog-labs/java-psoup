@@ -21,15 +21,16 @@ import psoup.util.*;
 
 public class InitializerTest {
 
-    static XLogger logger = XLoggerFactory.getXLogger(InitializerTest.class);
+    static private final XLogger logger = XLoggerFactory.getXLogger(InitializerTest.class);
 
+    static private final Pool pool = new GenePool();
 
     @Test
     public void testInitializeBranch() {
         Probability probability = new Probability(0.5);
         SharedCounter counter = new SharedCounter();
         Branch branch = new Branch();
-        GeneVisitor initializer = new Initializer(probability, 10, counter);
+        GeneVisitor initializer = new Initializer(pool, probability, 10, counter);
         branch.accept(initializer);
         logger.info("BRANCH: {}", branch);
     }
@@ -40,7 +41,7 @@ public class InitializerTest {
         Probability probability = new Probability(0.5);
         SharedCounter counter = new SharedCounter();
         Chop chop = new Chop();
-        GeneVisitor initializer = new Initializer(probability, 10, counter);
+        GeneVisitor initializer = new Initializer(pool, probability, 10, counter);
         chop.accept(initializer);
         logger.info("CHOP: {}", chop);
     }
@@ -51,7 +52,7 @@ public class InitializerTest {
         Probability probability = new Probability(0.5);
         SharedCounter counter = new SharedCounter();
         Copy copy = new Copy();
-        GeneVisitor initializer = new Initializer(probability, 10, counter);
+        GeneVisitor initializer = new Initializer(pool, probability, 10, counter);
         copy.accept(initializer);
         logger.info("COPY: {}", copy);
     }
@@ -62,7 +63,7 @@ public class InitializerTest {
         Probability probability = new Probability(0.5);
         SharedCounter counter = new SharedCounter();
         Get get = new Get();
-        GeneVisitor initializer = new Initializer(probability, 10, counter);
+        GeneVisitor initializer = new Initializer(pool, probability, 10, counter);
         get.accept(initializer);
         logger.info("GET: {}", get);
     }
@@ -73,7 +74,7 @@ public class InitializerTest {
         Probability probability = new Probability(0.5);
         SharedCounter counter = new SharedCounter();
         Merge merge = new Merge();
-        GeneVisitor initializer = new Initializer(probability, 10, counter);
+        GeneVisitor initializer = new Initializer(pool, probability, 10, counter);
         merge.accept(initializer);
         logger.info("MERGE: {}", merge);
     }
@@ -84,7 +85,7 @@ public class InitializerTest {
         Probability probability = new Probability(0.5);
         SharedCounter counter = new SharedCounter();
         Mutate mutate = new Mutate();
-        GeneVisitor initializer = new Initializer(probability, 10, counter);
+        GeneVisitor initializer = new Initializer(pool, probability, 10, counter);
         mutate.accept(initializer);
         logger.info("MUTATE: {}", mutate);
     }
@@ -95,7 +96,7 @@ public class InitializerTest {
         Probability probability = new Probability(0.5);
         SharedCounter counter = new SharedCounter();
         Put put = new Put();
-        GeneVisitor initializer = new Initializer(probability, 10, counter);
+        GeneVisitor initializer = new Initializer(pool, probability, 10, counter);
         put.accept(initializer);
         logger.info("PUT: {}", put);
     }
@@ -106,7 +107,7 @@ public class InitializerTest {
         Probability probability = new Probability(0.5);
         SharedCounter counter = new SharedCounter();
         Sequence sequence = new Sequence();
-        GeneVisitor initializer = new Initializer(probability, 10, counter);
+        GeneVisitor initializer = new Initializer(pool, probability, 10, counter);
         sequence.accept(initializer);
         logger.info("SEQUENCE: {}", sequence);
     }
@@ -116,8 +117,9 @@ public class InitializerTest {
     public void testInitializeGenerateGenes() {
         Probability probability = new Probability(0.85);
         SharedCounter counter = new SharedCounter();
+        Initializer initializer = new Initializer(pool, probability, 10, counter);
         for (int i = 0; i < 10; i++) {
-            Gene creature = Initializer.generateCreature(probability, 10, counter);
+            Gene creature = initializer.generateCreature();
             logger.info("CREATURE: {}", creature);
         }
     }

@@ -97,7 +97,6 @@ public class ChopperTest {
         Pool pool = new GenePool();
         pool.initialize(0, new Probability(0.5), 10, new Probability(0.5));
         Get get = new Get();
-        get.template = null;
         GeneVisitor chopper = new Chopper(pool, new Probability());
         get.accept(chopper);
     }
@@ -108,8 +107,7 @@ public class ChopperTest {
         Pool pool = new GenePool();
         pool.initialize(0, new Probability(0.5), 10, new Probability(0.5));
         Get get = new Get();
-        Gene template = new Branch();
-        get.template = template;
+        get.speciesId = pool.pickRandomSpecies();
         GeneVisitor chopper = new Chopper(pool, new Probability());
         get.accept(chopper);
     }

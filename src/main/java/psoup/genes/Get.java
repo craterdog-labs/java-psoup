@@ -33,6 +33,6 @@ public final class Get extends Gene {
     }
 
 
-    public Gene template;
+    public int speciesId;
 
 }

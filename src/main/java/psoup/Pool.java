@@ -24,6 +24,7 @@ public interface Pool {
     public void initialize(int numberOfCreatures, Probability relativeComplexity, int maximumDepth, Probability temperature);
     public Gene getCreature(int speciesId);
     public void putCreature(Gene creature);
+    public int pickRandomSpecies();
     public int getCurrentNumberOfGenes();
     public int getLowestNumberOfGenes();
     public int getHighestNumberOfGenes();
