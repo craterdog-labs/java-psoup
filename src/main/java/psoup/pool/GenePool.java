@@ -9,6 +9,7 @@
  ************************************************************************/
 package psoup.pool;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import craterdog.primitives.Probability;
 import craterdog.smart.SmartObject;
 import craterdog.smart.SmartObjectMapper;
@@ -66,24 +67,29 @@ public final class GenePool extends SmartObject<GenePool> implements Pool {
     }
 
 
-    static public GenePool loadGenePool(String fileName) throws IOException {
+    static public GenePool loadGenePool(String fileName) {
         SmartObjectMapper mapper = new SmartObjectMapper();
         try (FileInputStream fileInputStream = new FileInputStream(fileName)) {
             GenePool pool = mapper.readValue(fileInputStream, GenePool.class);
             return pool;
+        } catch (IOException e) {
+            throw new RuntimeException("Illegal pool file specified: " + fileName, e);
         }
     }
 
 
-    static public void storeGenePool(GenePool pool, String fileName) throws IOException {
+    static public void storeGenePool(GenePool pool, String fileName) {
         SmartObjectMapper mapper = new SmartObjectMapper();
         try (FileOutputStream fileOutputStream = new FileOutputStream(fileName)) {
             mapper.writeValue(fileOutputStream, pool);
+        } catch (IOException e) {
+            throw new RuntimeException("Illegal pool file specified: " + fileName, e);
         }
    }
 
 
     @Override
+    @JsonIgnore
     public synchronized Gene getCreature(int speciesId) {
 
         // if the gene pool is empty, return null
@@ -145,54 +151,63 @@ public final class GenePool extends SmartObject<GenePool> implements Pool {
 
 
     @Override
+    @JsonIgnore
     public synchronized int getCurrentNumberOfGenes() {
         return geneCounter.getCurrentValue();
     }
 
 
     @Override
+    @JsonIgnore
     public synchronized int getLowestNumberOfGenes() {
         return geneCounter.getLowWaterMark();
     }
 
 
     @Override
+    @JsonIgnore
     public synchronized int getHighestNumberOfGenes() {
         return geneCounter.getHighWaterMark();
     }
 
 
     @Override
+    @JsonIgnore
     public synchronized int getCurrentNumberOfSpecies() {
         return speciesCounter.getCurrentValue();
     }
 
 
     @Override
+    @JsonIgnore
     public synchronized int getLowestNumberOfSpecies() {
         return speciesCounter.getLowWaterMark();
     }
 
 
     @Override
+    @JsonIgnore
     public synchronized int getHighestNumberOfSpecies() {
         return speciesCounter.getHighWaterMark();
     }
 
 
     @Override
+    @JsonIgnore
     public synchronized int getCurrentNumberOfCreatures() {
         return creatureCounter.getCurrentValue();
     }
 
 
     @Override
+    @JsonIgnore
     public synchronized int getLowestNumberOfCreatures() {
         return creatureCounter.getLowWaterMark();
     }
 
 
     @Override
+    @JsonIgnore
     public synchronized int getHighestNumberOfCreatures() {
         return creatureCounter.getHighWaterMark();
     }
@@ -241,7 +256,7 @@ public final class GenePool extends SmartObject<GenePool> implements Pool {
     }
 
 
-    public final Map<Integer, Species> pool;
+    public Map<Integer, Species> pool;
     public Probability temperature;
     public final SharedCounter geneCounter = new SharedCounter();
     public final SharedCounter speciesCounter = new SharedCounter();

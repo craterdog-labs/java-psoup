@@ -9,6 +9,7 @@
  ************************************************************************/
 package psoup;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import craterdog.smart.SmartObject;
 import java.util.*;
 
@@ -39,6 +40,7 @@ public final class Species extends SmartObject<Species> {
     }
 
 
+    @JsonIgnore
     public Iterator<Gene> getIterator() {
         return members.iterator();
     }

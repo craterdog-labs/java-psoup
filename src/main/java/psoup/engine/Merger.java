@@ -10,7 +10,6 @@
 package psoup.engine;
 
 import psoup.GeneVisitor;
-import craterdog.primitives.Probability;
 import java.util.*;
 import psoup.*;
 import psoup.genes.*;
@@ -94,16 +93,15 @@ public final class Merger implements GeneVisitor {
 
     @Override
     public void visit(Sequence gene) {
-        if (!stack.empty()) {
-            Probability probability = new Probability();
-            int index = (int) (((double) gene.genes.size()) * probability.toDouble());
-            Gene top = stack.pop();
-            gene.genes.add(index, top);
-        }
         Iterator<Gene> iterator = gene.genes.iterator();
         while (iterator.hasNext() && !stack.empty()) {
             Gene item = iterator.next();
             item.accept(this);
+        }
+        while (!stack.empty()) {
+            Gene top = stack.pop();
+            gene.genes.add(top);
+            top.accept(this);
         }
     }
 

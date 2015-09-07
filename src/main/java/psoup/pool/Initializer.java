@@ -122,17 +122,40 @@ public final class Initializer implements GeneVisitor {
         Gene gene;
 
         // randomly create one of the eight gene types
-        int pick = RandomUtils.pickRandomIndex(8);
+        int pick = RandomUtils.pickRandomIndex(13);
         switch(pick) {
-            case 0: gene = new Branch(); break;
-            case 1: gene = new Chop(); break;
-            case 2: gene = new Copy(); break;
-            case 3: gene = new Get(); break;
-            case 4: gene = new Merge(); break;
-            case 5: gene = new Mutate(); break;
-            case 6: gene = new Put(); break;
-            case 7: gene = new Sequence(); break;
-            default: gene = new Sequence(); break; // should never happen!
+            case 0:
+                gene = new Branch();
+                break;
+            case 1:
+                gene = new Chop();
+                break;
+            case 2:
+                gene = new Copy();
+                break;
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+                gene = new Get();
+                break;
+            case 8:
+            case 9:
+                gene = new Merge();
+                break;
+            case 10:
+                gene = new Mutate();
+                break;
+            case 11:
+                gene = new Put();
+                break;
+            case 12:
+                gene = new Sequence();
+                break;
+            default: // should never happen!
+                gene = new Sequence();
+                break;
         }
         geneCounter.increment();
 

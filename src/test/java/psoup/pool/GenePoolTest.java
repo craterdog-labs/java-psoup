@@ -12,7 +12,6 @@ package psoup.pool;
 import craterdog.primitives.Probability;
 import psoup.*;
 import psoup.genes.*;
-import java.io.*;
 import static org.junit.Assert.fail;
 import org.junit.Test;
 import org.slf4j.ext.XLogger;
@@ -86,20 +85,12 @@ public class GenePoolTest {
 
     public void testLoadandStore() {
         GenePool poolA = new GenePool();
-        GenePool poolB = null;
+        GenePool poolB;
         poolA.initialize(20, new Probability(0.75), 3, new Probability(0.5));
-        try {
-            GenePool.storeGenePool(poolA, "target/gene-pool.json");
-            logger.info("First Pool: {}", poolA);
-        } catch (IOException e) {
-            fail("The GenePool store() method failed with this IOException:\n" + e.getMessage());
-        }
-        try {
-            poolB = GenePool.loadGenePool("target/gene-pool.json");
-            logger.info("Second Pool: {}", poolB);
-        } catch (IOException e) {
-            fail("The GenePool load() method failed with this IOException:\n" + e.getMessage());
-        }
+        GenePool.storeGenePool(poolA, "target/gene-pool.json");
+        logger.info("First Pool: {}", poolA);
+        poolB = GenePool.loadGenePool("target/gene-pool.json");
+        logger.info("Second Pool: {}", poolB);
         if (!poolA.equals(poolB)) {
             fail("The GenePool store() and load() methods don't result in equal gene pools.");
         }

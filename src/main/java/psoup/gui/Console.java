@@ -354,7 +354,7 @@ public final class Console extends javax.swing.JFrame {
         initialTemperaturePanel.add(initialTemperatureLabel);
 
         initialTemperatureField.setColumns(3);
-        initialTemperatureField.setText("50");
+        initialTemperatureField.setText("100");
         initialTemperaturePanel.add(initialTemperatureField);
 
         initializationValuesPanel.add(initialTemperaturePanel);
@@ -376,7 +376,7 @@ public final class Console extends javax.swing.JFrame {
         maximumDepthPanel.add(maximumDepthLabel);
 
         maximumDepthField.setColumns(3);
-        maximumDepthField.setText("5");
+        maximumDepthField.setText("10");
         maximumDepthPanel.add(maximumDepthField);
 
         initializationValuesPanel.add(maximumDepthPanel);
@@ -702,7 +702,7 @@ public final class Console extends javax.swing.JFrame {
         directoryPanel.add(directoryLabel);
 
         directoryField.setColumns(22);
-        directoryField.setText("./snapshots/");
+        directoryField.setText("~/.snapshots/");
         directoryPanel.add(directoryField);
 
         chooserButton.setText("Choose");
@@ -825,7 +825,11 @@ public final class Console extends javax.swing.JFrame {
     }//GEN-LAST:event_loadButtonActionPerformed
 
     private void storeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_storeButtonActionPerformed
-        // Add your handling code here:
+        String filename = directoryField.getText() + File.separator + prefixField.getText();
+        if (suffixCheckbox.isSelected()) {
+            filename += ".pool";
+        }
+        GenePool.storeGenePool(pool, filename);
     }//GEN-LAST:event_storeButtonActionPerformed
 
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
@@ -947,7 +951,7 @@ public final class Console extends javax.swing.JFrame {
     private javax.swing.JPanel temperaturePanel;
     // End of variables declaration//GEN-END:variables
 
-    private Pool pool;
+    private GenePool pool;
     private Evolver engine;
     private TimeSeries creatureData;
     private TimeSeries speciesData;
